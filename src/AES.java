@@ -124,7 +124,7 @@ public class AES {
             addRoundKey(originalInt, 10);
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 4; j++) {
-                    stringBuilder.append(originalInt[j][k]).append(" ");
+                    stringBuilder.append(Integer.toHexString(originalInt[j][k])).append(" ");
                 }
             }
         }
@@ -414,7 +414,7 @@ public class AES {
         int[][] temp = new int[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                temp[j][i] = Integer.parseInt(text[i * 4 + j]);
+                temp[j][i] = Integer.valueOf(text[i * 4 + j],16);
             }
         }
         return temp;
