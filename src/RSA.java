@@ -1,4 +1,3 @@
-import java.awt.desktop.SystemSleepEvent;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.Date;
@@ -29,18 +28,18 @@ public class RSA {
      * int类型数据初始化
      */
     private void init() {
-        double p = MillerRabin.getPrime();
+        double p = Utils.getPrime();
         double q;
         do {
-            q = MillerRabin.getPrime();
+            q = Utils.getPrime();
         } while (p == q);
         while (true) {
             e = new Random().nextInt(100);
-            if (MillerRabin.isRelativePrime(e, MillerRabin.Euler_totient(p, q)) && e < MillerRabin.Euler_totient(p, q) && e > 1) {
+            if (Utils.isRelativePrime(e, Utils.Euler_totient(p, q)) && e < Utils.Euler_totient(p, q) && e > 1) {
                 break;
             }
         }
-        d = MillerRabin.multiplicativeInverse(MillerRabin.Euler_totient(p, q), e);
+        d = Utils.multiplicativeInverse(Utils.Euler_totient(p, q), e);
         n = p * q;
     }
 
@@ -53,16 +52,16 @@ public class RSA {
         BigInteger p = BigInteger.probablePrime(1024, rnd);
         BigInteger q = BigInteger.probablePrime(1024, rnd);
         N = p.multiply(q);
-        F = MillerRabin.Euler_totient(p, q);
+        F = Utils.Euler_totient(p, q);
         int x;
         while (true) {
             x = new Random().nextInt(1000);
             E = new BigInteger(String.valueOf(x));
-            if (MillerRabin.isRelativePrime(E, F) && E.compareTo(F) < 0 && x > 1) {
+            if (Utils.isRelativePrime(E, F) && E.compareTo(F) < 0 && x > 1) {
                 break;
             }
         }
-        D = MillerRabin.multiplicativeInverse(F, E);
+        D = Utils.multiplicativeInverse(F, E);
     }
 
 
@@ -75,7 +74,7 @@ public class RSA {
     public String encrypt(String str) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
-            stringBuilder.append(MillerRabin.quick_mod(str.charAt(i), e, n) + " ");
+            stringBuilder.append(Utils.quick_mod(str.charAt(i), e, n) + " ");
         }
         return stringBuilder.toString();
     }
@@ -90,7 +89,7 @@ public class RSA {
         StringBuilder stringBuilder = new StringBuilder();
         String[] strings = str.split(" ");
         for (String string : strings) {
-            double x = MillerRabin.quick_mod(Integer.valueOf(string, 10), d, n);
+            double x = Utils.quick_mod(Integer.valueOf(string, 10), d, n);
             stringBuilder.append((char) x);
         }
         return stringBuilder.toString();
@@ -104,7 +103,7 @@ public class RSA {
      * @return
      */
     public double encrypt(double c) {
-        return (double) MillerRabin.quick_mod(c, e, n);
+        return (double) Utils.quick_mod(c, e, n);
     }
 
     /**
@@ -114,7 +113,7 @@ public class RSA {
      * @return
      */
     public double decrypt(double m) {
-        return (double) MillerRabin.quick_mod(m, d, n);
+        return (double) Utils.quick_mod(m, d, n);
     }
 
 
@@ -147,7 +146,7 @@ public class RSA {
     public String encryptBigInteger(String str) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
-            stringBuilder.append(MillerRabin.quick_mod(new BigInteger(String.valueOf((int) str.charAt(i))), E, N) + " ");
+            stringBuilder.append(Utils.quick_mod(new BigInteger(String.valueOf((int) str.charAt(i))), E, N) + " ");
         }
         return stringBuilder.toString();
     }
@@ -163,7 +162,7 @@ public class RSA {
         StringBuilder stringBuilder = new StringBuilder();
         String[] strings = str.split(" ");
         for (String string : strings) {
-            double x = MillerRabin.quick_mod(new BigInteger(string), D, N).doubleValue();
+            double x = Utils.quick_mod(new BigInteger(string), D, N).doubleValue();
             stringBuilder.append((char) x);
         }
         return stringBuilder.toString();

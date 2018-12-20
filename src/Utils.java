@@ -2,7 +2,7 @@ import java.awt.desktop.SystemSleepEvent;
 import java.math.BigInteger;
 import java.util.Random;
 
-public class MillerRabin {
+public class Utils {
     private static final int ORDER = 10000;// 随机数的数量级
     private static final int MIN = 1000; // 选择的随机数的最小值
 
