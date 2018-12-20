@@ -1,4 +1,6 @@
-import java.awt.desktop.SystemSleepEvent;
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.Random;
 
 public class Main {
 
@@ -13,8 +15,10 @@ public class Main {
 //        aes.aes_file("/Users/penney/Desktop/a.txt", "qazwsxedcrfvtgby");
 //        aes.des_file("/Users/penney/Desktop/a_cipher.txt", "qazwsxedcrfvtgby");
 
+
         RSA rsa = new RSA();
-        System.out.println("密文:" + rsa.encrypt(97));
-        System.out.println("解密后：" + rsa.decrypt(rsa.encrypt(97)));
+        System.out.println("解密后：" + rsa.decryptBigInteger(rsa.encryptBigInteger("hello my name is pengqiancheng")));
+        rsa.encrypt_file("/Users/penney/Desktop/a.txt");
+        rsa.decrypt_file("/Users/penney/Desktop/a_cipher.txt");
     }
 }
