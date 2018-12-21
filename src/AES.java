@@ -414,7 +414,7 @@ public class AES {
         int[][] temp = new int[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                temp[j][i] = Integer.valueOf(text[i * 4 + j],16);
+                temp[j][i] = Integer.valueOf(text[i * 4 + j], 16);
             }
         }
         return temp;
@@ -507,33 +507,33 @@ public class AES {
      */
     public void aes_file(String path, String key) {
         File file = new File(path);
+        if (file.exists()) {
+            //创建加密文件
+            String cipherFileName = file.getPath().replace(".txt", "_cipher.txt");
+            File cipherFile = new File(cipherFileName);
+            cipherFile.delete();
 
-        //创建加密文件
-        String cipherFileName = file.getPath().replace(".txt", "_cipher.txt");
-        File cipherFile = new File(cipherFileName);
-        cipherFile.delete();
-
-        try {
-            cipherFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //读取文件加密并写入文件
-        try {
-            BufferedReader originalTextWriter = new BufferedReader(new FileReader(file));
-            BufferedWriter cipherTextReader = new BufferedWriter(new FileWriter(cipherFile));
-            String originalText = null;
-            while ((originalText = originalTextWriter.readLine()) != null) {
-                String cipherText = aes(originalText, key);
-                cipherTextReader.write(cipherText + "\n");
+            try {
+                cipherFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            originalTextWriter.close();
-            cipherTextReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+            //读取文件加密并写入文件
+            try {
+                BufferedReader originalTextWriter = new BufferedReader(new FileReader(file));
+                BufferedWriter cipherTextReader = new BufferedWriter(new FileWriter(cipherFile));
+                String originalText = null;
+                while ((originalText = originalTextWriter.readLine()) != null) {
+                    String cipherText = aes(originalText, key);
+                    cipherTextReader.write(cipherText + "\n");
+                }
+                originalTextWriter.close();
+                cipherTextReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -544,32 +544,33 @@ public class AES {
      */
     public void des_file(String path, String key) {
         File cipherFile = new File(path);
+        if (cipherFile.exists()) {
+            //创建解密文件
+            String newFileName = cipherFile.getPath().replace(".txt", "_des.txt");
+            File newFile = new File(newFileName);
+            newFile.delete();
 
-        //创建解密文件
-        String newFileName = cipherFile.getPath().replace(".txt", "_des.txt");
-        File newFile = new File(newFileName);
-        newFile.delete();
-
-        try {
-            newFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //读取文件加密并写入文件
-        try {
-            BufferedReader cipherTextReader = new BufferedReader(new FileReader(cipherFile));
-            BufferedWriter originalTextWriter = new BufferedWriter(new FileWriter(newFile));
-            String cipherText = null;
-            while ((cipherText = cipherTextReader.readLine()) != null) {
-                String originalText = des(cipherText, key);
-                originalTextWriter.write(originalText + "\n");
+            try {
+                newFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            cipherTextReader.close();
-            originalTextWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+            //读取文件加密并写入文件
+            try {
+                BufferedReader cipherTextReader = new BufferedReader(new FileReader(cipherFile));
+                BufferedWriter originalTextWriter = new BufferedWriter(new FileWriter(newFile));
+                String cipherText = null;
+                while ((cipherText = cipherTextReader.readLine()) != null) {
+                    String originalText = des(cipherText, key);
+                    originalTextWriter.write(originalText + "\n");
+                }
+                cipherTextReader.close();
+                originalTextWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }

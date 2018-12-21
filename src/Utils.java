@@ -55,7 +55,7 @@ public class Utils {
     }
 
     /**
-     * 验证一个数是否为素数，将n-1改写为2^k * m的形式，其中m是奇数，在{2,...,n-1}中随机选取一个整数a;
+     * 验证一个数是否为素数
      *
      * @param n
      * @return 如果是素数返回true, 否则返回false
@@ -128,7 +128,6 @@ public class Utils {
     /**
      * 判断两个数是否互质
      */
-
     public static boolean isRelativePrime(BigInteger a, BigInteger b) {
         if (a.compareTo(b) < 0) {
             BigInteger temp = a;

@@ -17,7 +17,7 @@ public class Main {
 
 
         RSA rsa = new RSA();
-        System.out.println("解密后：" + rsa.decryptBigInteger(rsa.encryptBigInteger("hello my name is pengqiancheng")));
+       // System.out.println("解密后：" + rsa.decryptBigInteger(rsa.encryptBigInteger("hello my name is pengqiancheng")));
         rsa.encrypt_file("/Users/penney/Desktop/a.txt");
         rsa.decrypt_file("/Users/penney/Desktop/a_cipher.txt");
     }

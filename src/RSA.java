@@ -14,6 +14,8 @@ public class RSA {
     private static BigInteger N;
     private static BigInteger F;
 
+    private final static int PRIME_LENGTH = 1024;
+
 
     /**
      * 初始化生成共钥和密钥
@@ -49,8 +51,8 @@ public class RSA {
      */
     private void BigIntegerInit() {
         Random rnd = new Random(new Date().getTime());
-        BigInteger p = BigInteger.probablePrime(1024, rnd);
-        BigInteger q = BigInteger.probablePrime(1024, rnd);
+        BigInteger p = BigInteger.probablePrime(PRIME_LENGTH, rnd);
+        BigInteger q = BigInteger.probablePrime(PRIME_LENGTH, rnd);
         N = p.multiply(q);
         F = Utils.Euler_totient(p, q);
         int x;
@@ -176,33 +178,33 @@ public class RSA {
      */
     public void encrypt_file(String path) {
         File file = new File(path);
+        if (file.exists()) {
+            //创建加密文件
+            String cipherFileName = file.getPath().replace(".txt", "_cipher.txt");
+            File cipherFile = new File(cipherFileName);
+            cipherFile.delete();
 
-        //创建加密文件
-        String cipherFileName = file.getPath().replace(".txt", "_cipher.txt");
-        File cipherFile = new File(cipherFileName);
-        cipherFile.delete();
-
-        try {
-            cipherFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //读取文件加密并写入文件
-        try {
-            BufferedReader originalTextWriter = new BufferedReader(new FileReader(file));
-            BufferedWriter cipherTextReader = new BufferedWriter(new FileWriter(cipherFile));
-            String originalText = null;
-            while ((originalText = originalTextWriter.readLine()) != null) {
-                String cipherText = encryptBigInteger(originalText);
-                cipherTextReader.write(cipherText + "\n");
+            try {
+                cipherFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            originalTextWriter.close();
-            cipherTextReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+            //读取文件加密并写入文件
+            try {
+                BufferedReader originalTextWriter = new BufferedReader(new FileReader(file));
+                BufferedWriter cipherTextReader = new BufferedWriter(new FileWriter(cipherFile));
+                String originalText = null;
+                while ((originalText = originalTextWriter.readLine()) != null) {
+                    String cipherText = encryptBigInteger(originalText);
+                    cipherTextReader.write(cipherText + "\n");
+                }
+                originalTextWriter.close();
+                cipherTextReader.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -212,31 +214,31 @@ public class RSA {
      */
     public void decrypt_file(String path) {
         File cipherFile = new File(path);
+        if (cipherFile.exists()) {
+            //创建解密文件
+            String newFileName = cipherFile.getPath().replace(".txt", "_des.txt");
+            File newFile = new File(newFileName);
+            newFile.delete();
 
-        //创建解密文件
-        String newFileName = cipherFile.getPath().replace(".txt", "_des.txt");
-        File newFile = new File(newFileName);
-        newFile.delete();
-
-        try {
-            newFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //读取文件加密并写入文件
-        try {
-            BufferedReader cipherTextReader = new BufferedReader(new FileReader(cipherFile));
-            BufferedWriter originalTextWriter = new BufferedWriter(new FileWriter(newFile));
-            String cipherText = null;
-            while ((cipherText = cipherTextReader.readLine()) != null) {
-                String originalText = decryptBigInteger(cipherText);
-                originalTextWriter.write(originalText + "\n");
+            try {
+                newFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            cipherTextReader.close();
-            originalTextWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            //读取文件加密并写入文件
+            try {
+                BufferedReader cipherTextReader = new BufferedReader(new FileReader(cipherFile));
+                BufferedWriter originalTextWriter = new BufferedWriter(new FileWriter(newFile));
+                String cipherText = null;
+                while ((cipherText = cipherTextReader.readLine()) != null) {
+                    String originalText = decryptBigInteger(cipherText);
+                    originalTextWriter.write(originalText + "\n");
+                }
+                cipherTextReader.close();
+                originalTextWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
