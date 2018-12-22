@@ -1,4 +1,3 @@
-import java.awt.desktop.SystemSleepEvent;
 import java.math.BigInteger;
 import java.util.Random;
 
@@ -8,7 +7,6 @@ public class Utils {
 
     /**
      * 快速幂计算指数模运算 a^m % n
-     *
      * @param a 底数
      * @param b 指数
      * @param n 被mod数
